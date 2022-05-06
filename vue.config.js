@@ -4,6 +4,10 @@ const Components = require('unplugin-vue-components/webpack');
 const { TDesignResolver } = require('unplugin-vue-components/resolvers');
 
 module.exports = defineConfig({
+    assetsDir:'static',
+    parallel:false,
+    publicPath:'./',
+    runtimeCompiler: true,
     transpileDependencies: true,
     configureWebpack: {
         plugins: [
