@@ -3,18 +3,7 @@ import { createStore } from 'vuex'
 export default createStore({
   state: {
     list:[
-      {
-        title:"xxx",
-        compelete:false
-      },
-      {
-        title:"吃饭",
-        compelete:false
-      },
-      {
-        title:"睡觉",
-        compelete:false
-      }
+
       ]
     ,randomTodo: {
       idx: -1,

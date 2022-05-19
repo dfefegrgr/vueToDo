@@ -73,7 +73,9 @@ export default defineComponent({
 
 }
 .box{
+
   display: block;
   position: relative;
+
 }
 </style>

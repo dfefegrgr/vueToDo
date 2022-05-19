@@ -1,9 +1,9 @@
 <template>
   <div class="randBox" >
-    <t-button  style="color: pink" theme="default" variant="base" v-on:click="randtodo" >随机</t-button>
-    <t-button  style="color: pink" v-on:click="deltodo" >完成</t-button>
+    <t-button  class="btn" theme="default" variant="base" v-on:click="randtodo" >随机</t-button>
+    <t-button  class="btn" v-if=" s.r.str!=='' "  v-on:click="deltodo" >完成</t-button>
 
-    <div  style="color: pink" v-if="s.r.str !==''">
+    <div   v-if="s.r.str !==''">
       随机的事情是：{{ s.r.str }}
     </div>
   </div>
@@ -39,5 +39,9 @@ export default defineComponent({
 .randBox{
   margin-bottom: 40px;
 }
+.btn{
+  margin-right: 9%;
+}
+
 
 </style>
