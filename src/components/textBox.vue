@@ -2,15 +2,15 @@
   <div class="a">
     <p class="header"> <t-icon name="format-vertical-align-left"  size="large" /> TODO LIST</p>
     <div class="textBox">
-      <p  v-for="item in list" >
+      <p  v-for="item in todo_list" >
         <t-icon name="round"  size="large" />
-        {{item.title}}
+        {{item}}
       </p>
     </div>
 
     <div class="addBox">
-      <t-input   class="addBox1" clearable  placeholder="请输入任务名称" v-model="newtodo"/>
-      <t-button   class="addBox2" v-on:click="add">添加</t-button>
+      <t-input   class="addBox1" clearable  placeholder="请输入任务名称" v-model="new_todo"/>
+      <t-button   class="addBox2" v-on:click="fetchAddTodo()">添加</t-button>
     </div>
   </div>
 </template>
@@ -21,27 +21,33 @@
 import {defineComponent,ref} from "vue";
 export default defineComponent({
   name:'textBox',
-  props:{
-    list:{
-      type:Array,
-      required:false
+  data(){
+    return {
+      url_base:"http://101.34.30.52:5098/todo/",
+      todo_list: [],
+      new_todo: ''
     }
   },
-  emits:['add'],
-  setup(props,context){
-
-
-    let newtodo=ref('')
-    let add=()=>{
-      context.emit('add',newtodo.value)
-      newtodo.value=''
+  mounted() {
+    this.fetchTodoList()
+  },
+  methods: {
+    fetchTodoList() {
+      fetch(`${this.url_base}get`)
+          .then (res=>{return res.json();})
+          .then(res => {
+            this.todo_list = res.todos
+          })
+    },
+    fetchAddTodo(){
+      fetch(`${this.url_base}add?add_todo=${this.new_todo}`)
+          .then(res=>{
+            console.log(res.json)
+          })
+      this.fetchTodoList()
     }
-    return{
-      add,
-      newtodo
-    }
+
   }
-
 
 
 })

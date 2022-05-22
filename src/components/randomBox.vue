@@ -1,10 +1,10 @@
 <template>
   <div class="randBox" >
-    <t-button  class="btn" theme="default" variant="base" v-on:click="randtodo" >随机</t-button>
-    <t-button  class="btn" v-if=" s.r.str!=='' "  v-on:click="deltodo" >完成</t-button>
+    <t-button  class="btn" theme="default" variant="base" v-on:click="fetchRandom" >随机</t-button>
+    <t-button  class="btn" v-if=" random_todo!=='' "  v-on:click="del_random" >完成</t-button>
 
-    <div   v-if="s.r.str !==''">
-      随机的事情是：{{ s.r.str }}
+    <div   v-if="random_todo !==''">
+      随机的事情是：{{ random_todo }}
     </div>
   </div>
 </template>
@@ -13,26 +13,33 @@
 import { defineComponent, ref} from "vue";
 export default defineComponent({
   name:'randomBox',
-  props:{
-    s: {
-      type: Object,
-      required: false
+  data(){
+    return {
+      url_base:"http://101.34.30.52:5098/todo/",
+      random_todo: '',
+      todo_list: []
     }
   },
-  emits:['rand1','comp'],
-  setup(props,ctx){
-    let randtodo=()=>{
-      ctx.emit('rand1')
-    }
-    let deltodo=()=>{
-      ctx.emit('comp')
-    }
-    return{
-      randtodo,
-      deltodo
-    }
-  },
+  methods: {
 
+    async fetchRandom() {
+      //await 等待方法跑完
+      await fetch(`${this.url_base}get`)
+          .then (res=>{return res.json();})
+          .then(res => {
+            this.todo_list = res.todos
+          })
+      let idx=Math.floor(Math.random()* this.todo_list.length)
+      this.random_todo=this.todo_list[idx]
+    },
+
+    del_random() {
+      fetch(`${this.url_base}del?del_todo=${this.random_todo}`)
+      this.random_todo=''
+      // 刷新整个页面
+      location.reload()
+    }
+  }
 })
 </script>
 <style>
